@@ -24,15 +24,17 @@ public class FileServerThread extends Thread {
           return;
         }
 
-      byte[] fileContent = {
-        (byte) 0xDE,
-        (byte) 0xAD,
-        (byte) 0xBE,
-        (byte) 0xEF,
-      };
+        char[] fileContent = "DEAD\nBEEF\n".toCharArray();
 
-        for (byte b : fileContent) {
-          server.sendByte(b);
+        if (fileContent == null) {
+          server.sendFileEnd();
+          server.close();
+          return;
+        }
+
+        System.out.println(String.format("Sending file content %s", fileContent));
+        for (char b : fileContent) {
+          server.sendByte((byte) b);
         }
 
         server.sendFileEnd();      

@@ -39,18 +39,14 @@ public class FileServer {
   }
 
   public boolean fileExists(String filename) {
-    return filename.equals("pepe.txt");
+    return filename.equals("important_file.txt");
   }
 
   public void sendFileEnd() throws Exception {
     this.out.write(0);
   }
 
-  // TODO: Cliente manda close al server
-
   public void sendByte(byte b) throws Exception {
-    System.out.println(String.format("sending %02X", b));
-
     out.write(b);
   }
 

@@ -28,9 +28,8 @@ public class FileClient {
 
   public boolean readNextByte() throws Exception {
     lastByte = in.read();
-    Integer integer = Integer.valueOf(lastByte);
     if (lastByte != 0) {
-      System.out.print(String.format("%02X", integer.byteValue()));
+      System.out.print((char) lastByte);
     } else {
       System.out.println("\nEof");
     }
@@ -46,16 +45,27 @@ public class FileClient {
   }
 
   public static void main(String[] args) throws Exception {
-    FileClient client = new FileClient();
-    if (client.start()) {
-      System.out.println("File client started!");
-      System.out.println("Please enter a filename");
-      String filename = System.console().readLine();
-      client.request(filename);
-      while(client.readNextByte()) {}
-      client.close();
-    } else {
-      System.out.println("Could not start client!");
+    Console cnsl = System.console();
+    if (cnsl == null) {
+      System.out.println("No console available");
+      return;
     }
+    
+    FileClient client = new FileClient();
+    if (!client.start()) {
+      System.out.println("Could not start client!");
+      return;
+    }
+
+    System.out.println("File client started!");
+    System.out.println("Please enter a filename");
+    String filename = cnsl.readLine();
+    if (filename == null) {
+      filename = "";
+    }
+    
+    client.request(filename);
+    while(client.readNextByte()) {}
+    client.close();
   }
 }
