@@ -16,17 +16,13 @@ public class FileServerThread extends Thread {
       }
 
       System.out.println("File server started!");
-      if (!server.hasRequest()) {
-        server.close();
-        return;
-      }
-
-      String fileName = server.readFileName();
-      if (!server.fileExists(fileName)) {
-        server.sendFileEnd();
-        server.close();
-        return;
-      }
+      while (server.hasRequest()) {
+        String fileName = server.readFileName();
+        if (!server.fileExists(fileName)) {
+          server.sendFileEnd();
+          server.close();
+          return;
+        }
 
       byte[] fileContent = {
         (byte) 0xDE,
@@ -35,13 +31,15 @@ public class FileServerThread extends Thread {
         (byte) 0xEF,
       };
 
-      for (byte b : fileContent) {
-        server.sendByte(b);
+        for (byte b : fileContent) {
+          server.sendByte(b);
+        }
+
+        server.sendFileEnd();      
       }
 
-      server.sendFileEnd();
-    
       server.close();
+      return;
     } catch (Exception e) {
       e.printStackTrace();
     }

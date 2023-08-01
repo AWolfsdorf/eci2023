@@ -29,12 +29,17 @@ public class FileClient {
   public boolean readNextByte() throws Exception {
     lastByte = in.read();
     Integer integer = Integer.valueOf(lastByte);
-    System.out.print(String.format("%02X", integer.byteValue()));
+    if (lastByte != 0) {
+      System.out.print(String.format("%02X", integer.byteValue()));
+    } else {
+      System.out.println("\nEof");
+    }
 
     return lastByte != 0;
   }
 
   public void close() throws Exception {
+    out.write("CLOSE\n".getBytes());
     socket.close();
     in.close();
     out.close();
@@ -44,7 +49,9 @@ public class FileClient {
     FileClient client = new FileClient();
     if (client.start()) {
       System.out.println("File client started!");
-      client.request("pepe.txt");
+      System.out.println("Please enter a filename");
+      String filename = System.console().readLine();
+      client.request(filename);
       while(client.readNextByte()) {}
       client.close();
     } else {
