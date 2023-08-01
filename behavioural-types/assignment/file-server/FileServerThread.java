@@ -24,7 +24,7 @@ public class FileServerThread extends Thread {
           return;
         }
 
-        char[] fileContent = "DEAD\nBEEF\n".toCharArray();
+        char[] fileContent = "DEAD\nBEEF".toCharArray();
 
         if (fileContent == null) {
           server.sendFileEnd();
@@ -32,7 +32,6 @@ public class FileServerThread extends Thread {
           return;
         }
 
-        System.out.println(String.format("Sending file content %s", fileContent));
         for (char b : fileContent) {
           server.sendByte((byte) b);
         }

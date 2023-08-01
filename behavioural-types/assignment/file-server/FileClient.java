@@ -59,6 +59,7 @@ public class FileClient {
 
     System.out.println("File client started!");
     System.out.println("Please enter a filename");
+    System.out.println("Reading byte by byte");
     String filename = cnsl.readLine();
     if (filename == null) {
       filename = "";

@@ -1,4 +1,4 @@
-typestate FileClient2Protocol {
+typestate Client2Protocol {
     Init = {
         boolean start(): <false: end, true: Idle>
     }
